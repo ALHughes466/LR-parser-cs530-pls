@@ -50,7 +50,7 @@ public class Project2 {
 
     public static void handleAction(String action, boolean isId) {
         //handle the action
-        System.out.println(String.format("%-30s%-30s%-10s", stack.toString(), input.toString(), action));
+        System.out.println(String.format("%-50s%-80s%-5s", stack.toString(), input.toString(), action));
         String temp;
         if (action.equals("acc")) {
             quit();
@@ -135,7 +135,7 @@ public class Project2 {
         }
         input = new StringBuilder(inputCheck);
         stack = new StringBuilder("0"); //stack always starts with 0
-        System.out.println(String.format("%-30s%-30s%-10s", "Stack", "Input", "Action"));
+        System.out.println(String.format("%-50s%-80s%-5s", "Stack", "Input", "Action"));
         while (true) {
             switch (input.charAt(0)) {
                 //each case will get the action and the digits on the end of the stack, then run handleAction.

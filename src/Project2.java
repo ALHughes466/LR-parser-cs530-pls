@@ -47,6 +47,7 @@ public class Project2 {
     }
 
     public static void handleAction(String action, boolean isId) {
+        //handle the action
         System.out.println(String.format("%-30s%-30s%-10s", stack.toString(), input.toString(), action));
         String temp;
         if (action.equals("acc")) {
@@ -110,21 +111,31 @@ public class Project2 {
     }
 
     public static void main(String[] args) {
+        String inputCheck;
         int stackNum; //for storing the num at the end of the stack
         String action; //for storing the current action from the table
         int actionNum; //only used if the action state is double digits
         initializeTable();
         initializeGrammar();
         Scanner kb = new Scanner(System.in);
-        System.out.print("Enter sentence: ");
-        input = new StringBuilder(kb.nextLine());
+        while(true){
+            System.out.print("Enter sentence: ");
+            inputCheck = kb.nextLine();
+            if(inputCheck.charAt(inputCheck.length()-1) != '$'){
+                System.out.println("\nInput does not end with $.");
+                continue;
+            }
+            break;
+        }
+        input = new StringBuilder(inputCheck);
         stack = new StringBuilder("0"); //stack always starts with 0
         System.out.println(String.format("%-30s%-30s%-10s", "Stack", "Input", "Action"));
         while (true) {
             switch (input.charAt(0)) {
+                //each case will get the action and the digits on the end of the stack, then run handleAction.
                 case 'i':
                     if (input.charAt(1) == 'd') { //checking for id
-                        if (stack.length() > 1) {
+                        if (stack.length() > 1) { //check if we're at the beginning of the stack to prevent out of bounds exception.
                             if (Character.isDigit(stack.charAt(stack.length() - 2))) {
                                 stackNum = Integer.parseInt(stack.substring(stack.length() - 2));
                             } else {
@@ -156,8 +167,12 @@ public class Project2 {
                     handleAction(action, false);
                     break;
                 case '(':
-                    if (Character.isDigit(stack.charAt(stack.length() - 2))) {
-                        stackNum = Integer.parseInt(stack.substring(stack.length() - 2));
+                    if (stack.length() > 1) { // just in case the input begins with a "(", check if we're at the beginning of the stack to prevent out of bounds exception.
+                        if (Character.isDigit(stack.charAt(stack.length() - 2))) {
+                            stackNum = Integer.parseInt(stack.substring(stack.length() - 2));
+                        } else {
+                            stackNum = Character.getNumericValue(stack.charAt(stack.length() - 1));
+                        }
                     } else {
                         stackNum = Character.getNumericValue(stack.charAt(stack.length() - 1));
                     }

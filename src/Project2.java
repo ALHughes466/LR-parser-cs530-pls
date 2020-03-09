@@ -18,6 +18,7 @@ public class Project2 {
     }
 
     public static void initializeTable() {
+        //create the parse table
         parseTable = new String[][]{
                 {"0", "s5", "emp", "emp", "s4", "emp", "emp", "1", "2", "3"},
                 {"1", "emp", "s6", "emp", "emp", "emp", "acc", "emp", "emp", "emp"},
@@ -35,6 +36,7 @@ public class Project2 {
     }
 
     public static void initializeGrammar() {
+        //create the grammar rules
         grammar = new String[][]{
                 {"num", "grammar"},
                 {"1", "E>E+T"},
@@ -69,11 +71,14 @@ public class Project2 {
         } else {
             String rule = grammar[Character.getNumericValue(action.charAt(1))][1]; //get the rule
             int index;
-            switch (rule) { //parse the rule
+            switch (rule) { //parse the rule. each case handles a different rule
                 case "E>E+T":
+                    //get the index of "E" starting at an index just before where "E" is expected to be.
                     index = stack.indexOf("E", stack.length() - 7);
+                    //delete everything from "E" index onwards. add E back (got lazy writing this)
                     stack.delete(index, stack.length());
                     stack.append('E');
+                    //append to the stack the entry in the table where the row is the number before E and the column is column E, which is always column 7
                     stack.append(parseTable[Character.getNumericValue(stack.charAt(stack.length() - 2))][7]);
                     break;
                 case "E>T":
@@ -118,10 +123,11 @@ public class Project2 {
         initializeTable();
         initializeGrammar();
         Scanner kb = new Scanner(System.in);
-        while(true){
+        while (true) {
+            //check that the input ends with $, otherwise program will encounter an error near the end
             System.out.print("Enter sentence: ");
             inputCheck = kb.nextLine();
-            if(inputCheck.charAt(inputCheck.length()-1) != '$'){
+            if (inputCheck.charAt(inputCheck.length() - 1) != '$') {
                 System.out.println("\nInput does not end with $.");
                 continue;
             }
